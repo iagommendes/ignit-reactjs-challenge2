@@ -1,18 +1,37 @@
+import { Button } from "./Button";
+
 interface SideBarProps {
-  fisrtTitle: string;
-  secondTitle: string;
-  children: Array<any>;
+  genres: Array<{
+    id: number;
+    name: 'action' | 'comedy' | 'documentary' | 'drama' | 'horror' | 'family';
+    title: string;
+  }>
+  selectedGenreId: number;
+  setSelectedGenreId: (id: number) => void;
 }
 
-export function SideBar(props: SideBarProps) {
-  return (
-    <nav className="sidebar">
-      <span>
-        {props.fisrtTitle}
-        <p>{props.secondTitle}</p>
-      </span>
+export function SideBar({ genres, selectedGenreId, setSelectedGenreId }: SideBarProps) {
+  
+  function handleClickButton(id: number) {
+    setSelectedGenreId(id);
+  }
 
-      <div className="buttons-container">{props.children}</div>
-    </nav>
+  return(
+    <nav className="sidebar">
+    <span>Watch<p>Me</p></span>
+  
+    <div className="buttons-container">
+      {genres.map(genre => (
+        <Button
+          key={String(genre.id)}
+          title={genre.title}
+          iconName={genre.name}
+          onClick={() => handleClickButton(genre.id)}
+          selected={selectedGenreId === genre.id}
+        />
+      ))}
+    </div>
+  
+  </nav>
   );
 }
